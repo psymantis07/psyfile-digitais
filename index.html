@@ -4,64 +4,224 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Psyfile Digitais — Compra via PIX</title>
+  <meta name="description" content="Psyfile Digitais - arquivos digitais (planners, templates, mockups). Pague por PIX e receba o download." />
   <style>
-    :root{--bg:#fff8f6;--teal:#7FE0C7;--folder:#FFD166;--brand:#4B2E83;--card:#ffffff;--muted:#6b7280}
+    :root{
+      --bg:#fff8f6; --teal:#7FE0C7; --folder:#FFD166; --brand:#4B2E83; --card:#ffffff; --muted:#6b7280;
+      --maxw:1100px;
+    }
     *{box-sizing:border-box;font-family:Inter, system-ui, Arial, sans-serif}
-    body{margin:0;background:var(--bg);color:#0f1724}
-    .container{max-width:980px;margin:28px auto;padding:20px}
-    header{display:flex;gap:16px;align-items:center}
-    .logo{width:72px;height:72px;border-radius:14px;overflow:hidden}
-    h1{margin:0;font-size:22px;color:var(--brand)}
-    p.lead{color:var(--muted);margin:8px 0 20px}
-    .grid{display:grid;grid-template-columns:1fr 340px;gap:20px}
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 24px rgba(16,24,40,0.06)}
-    .price{font-size:26px;font-weight:800;color:var(--brand)}
-    .btn{padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-    .btn-primary{background:var(--brand);color:white}
-    .btn-ghost{border:1px solid rgba(75,46,131,0.12);color:var(--brand);background:transparent}
-    .pix-key{background:white;padding:12px;border-radius:10px;font-weight:700;border:1px dashed #ccd}
-    .chat-toggle{position:fixed;right:20px;bottom:20px}
-    .chat-button{width:56px;height:56px;border-radius:50%;background:var(--brand);color:white;border:none;font-size:20px;cursor:pointer}
+    body{margin:0;background:var(--bg);color:#0f1724;-webkit-font-smoothing:antialiased;}
+    .wrap{max-width:var(--maxw);margin:36px auto;padding:20px}
+    header{display:flex;gap:18px;align-items:center;padding:8px 0}
+    .logo{width:72px;height:72px;border-radius:12px;overflow:hidden;flex:0 0 72px;box-shadow:0 6px 20px rgba(75,46,131,0.06)}
+    .logo img{width:100%;height:100%;object-fit:cover;display:block}
+    .brand h1{margin:0;color:var(--brand);font-size:20px}
+    .brand p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:24px;margin-top:18px}
+    .card{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 10px 30px rgba(16,24,40,0.06)}
+    .product-title{color:var(--brand);font-size:20px;margin:0 0 6px;font-weight:800}
+    .muted{color:var(--muted)}
+    .price{font-size:24px;color:var(--brand);font-weight:800;margin-top:8px}
+    .pix-box{margin-top:14px}
+    .pix-key{background:linear-gradient(180deg,#fff,#fcfcff);padding:10px;border-radius:10px;border:1px dashed rgba(75,46,131,0.06);font-weight:700;color:var(--brand);word-break:break-all}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;cursor:pointer}
+    .btn-primary{background:var(--brand);color:#fff;border:none}
+    .btn-ghost{background:transparent;border:1px solid rgba(75,46,131,0.12);color:var(--brand)}
+    aside .card{padding:18px}
+    .summary h4{margin:0 0 6px}
+    footer{margin-top:26px;color:var(--muted);font-size:13px}
+    /* chat */
+    .chat-toggle{position:fixed;right:18px;bottom:18px;z-index:999}
+    .chat-button{width:56px;height:56px;border-radius:999px;background:var(--brand);color:#fff;border:none;cursor:pointer;box-shadow:0 10px 30px rgba(75,46,131,0.18);font-size:20px}
+    .chat-window{position:fixed;right:18px;bottom:86px;width:340px;height:460px;background:#fff;border-radius:12px;box-shadow:0 20px 60px rgba(16,24,40,0.2);display:flex;flex-direction:column;overflow:hidden;z-index:999;transform:translateY(0);}
+    .chat-header{padding:12px;background:linear-gradient(90deg,var(--brand),#6b4db0);color:#fff;display:flex;align-items:center;gap:10px}
+    .chat-header img{width:36px;height:36px;border-radius:8px;object-fit:cover}
+    .chat-messages{flex:1;padding:12px;overflow:auto;background:#fbfbff}
+    .msg{margin-bottom:10px;max-width:78%;padding:8px 10px;border-radius:12px}
+    .msg.user{margin-left:auto;background:linear-gradient(180deg,var(--teal),#6fd4b8);color:#033}
+    .msg.system{margin-right:auto;background:#eee;color:#111}
+    .chat-input{display:flex;padding:10px;border-top:1px solid #eee;gap:8px}
+    .chat-input input{flex:1;padding:8px;border-radius:8px;border:1px solid #ddd}
+    .small{font-size:12px;color:var(--muted)}
+    .actions{display:flex;gap:8px;margin-top:12px;align-items:center}
+    @media(max-width:980px){.grid{grid-template-columns:1fr}.chat-window{right:12px;left:12px;width:auto}}
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="wrap">
     <header>
-      <div class="logo"><img src="logo.png" style="width:100%;height:100%;object-fit:cover"></div>
-      <div>
+      <div class="logo"><img src="logo.png" alt="Psyfile Digitais logo"></div>
+      <div class="brand">
         <h1>Psyfile Digitais</h1>
-        <p class="lead">Arquivos digitais: planners, mockups, SVGs e templates.</p>
+        <p class="muted">Arquivos digitais: planners, mockups, SVGs e templates.</p>
       </div>
     </header>
 
-    <div class="grid" style="margin-top:18px">
-      <main class="card">
-        <h2 style="color:var(--brand)">Kit Planner 2026 — Versão PRO</h2>
-        <p class="muted">Arquivo digital — download liberado após pagamento.</p>
+    <div class="grid">
+      <main class="card" aria-labelledby="prod-title">
+        <h2 id="prod-title" class="product-title">Kit Planner 2026 — Versão PRO</h2>
+        <p class="muted">ZIP com 12 PDFs, 10 capas editáveis e arquivos SVG. Licença de uso pessoal.</p>
 
-        <div class="price">R$ 29,90</div>
+        <div class="price">R$ <span id="price">29,90</span></div>
 
-        <hr style="margin:16px 0">
+        <hr style="margin:14px 0">
 
-        <h3>Pagamento via PIX</h3>
-        <div class="pix-key">c167165b-1eb4-4753-941a-e792d8f8b0c6</div>
+        <h3 style="margin:0 0 8px">Pagamento via PIX</h3>
+        <div class="pix-box">
+          <div class="pix-key" id="pixKey">c167165b-1eb4-4753-941a-e792d8f8b0c6</div>
+        </div>
 
-        <a class="btn btn-primary" style="margin-top:12px"
-           href="https://drive.google.com/uc?export=download&id=1-X9CaQzw5FJ8EzwxZKBYJJSjIyQXFwCm">
-           Baixar arquivo
-        </a>
+        <div class="actions">
+          <button class="btn btn-ghost" onclick="copyPix()">Copiar chave PIX</button>
+          <a id="directDownload" class="btn btn-primary" href="https://drive.google.com/uc?export=download&id=1-X9CaQzw5FJ8EzwxZKBYJJSjIyQXFwCm" target="_blank">Baixar (só se liberado)</a>
+        </div>
+
+        <div style="margin-top:12px" class="small">Após o pagamento, envie o comprovante pelo chat (ícone no canto). O vendedor confirma e libera o download.</div>
+
       </main>
 
-      <aside class="card">
-        <h3>Resumo</h3>
-        <p>Kit Planner 2026</p>
-        <p class="price">R$ 29,90</p>
+      <aside>
+        <div class="card summary">
+          <h4>Resumo do pedido</h4>
+          <div style="margin-top:8px"><strong>Kit Planner 2026</strong></div>
+          <div style="margin-top:12px" class="price">R$ 29,90</div>
+
+          <hr style="margin:12px 0">
+
+          <div style="margin-top:6px" class="small">Vendedor:</div>
+          <div class="small">WhatsApp: <span id="sellerPhone">+55 9XXXXXXXXX</span></div>
+
+          <hr style="margin:12px 0">
+
+          <div class="small">Painel do vendedor</div>
+          <input id="adminPass" type="password" placeholder="senha do painel" style="width:100%;padding:10px;border-radius:8px;border:1px solid #eee;margin-top:8px" />
+          <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="openAdmin()">Entrar</button>
+          <div class="small" style="margin-top:8px">No painel você pode liberar o link de download e gerenciar conversas.</div>
+        </div>
       </aside>
+    </div>
+
+    <footer class="muted">Feito para Psyfile Digitais — personalize nome, preço e informações no painel. Dúvidas? Me chama.</footer>
+  </div>
+
+  <!-- Chat -->
+  <div class="chat-toggle">
+    <button class="chat-button" id="chatToggle" title="Abrir chat">💬</button>
+  </div>
+
+  <div id="chatWindow" class="chat-window" style="display:none" aria-hidden="true">
+    <div class="chat-header">
+      <img src="logo.png" alt="logo">
+      <div>
+        <div style="font-weight:800">Atendimento Psyfile</div>
+        <div class="small">Envie mensagem e anexe o comprovante</div>
+      </div>
+      <div style="margin-left:auto"><button onclick="closeChat()" style="background:transparent;border:none;color:white;font-size:18px;cursor:pointer">✕</button></div>
+    </div>
+    <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Escreva sua mensagem..." />
+      <input id="chatFile" type="file" accept="image/*,application/pdf" style="display:none" />
+      <button class="btn btn-ghost" onclick="document.getElementById('chatFile').click()">Anexar</button>
+      <button class="btn btn-primary" onclick="sendMessage()">Enviar</button>
+    </div>
+    <div style="padding:8px;border-top:1px solid #eee;background:#fafafa;font-size:12px;color:#666;display:flex;align-items:center;gap:8px">
+      <button class="btn btn-ghost" onclick="notifySeller()">Notificar vendedor por e‑mail</button>
+      <div class="small">Ou use o painel para liberar o download</div>
     </div>
   </div>
 
-  <div class="chat-toggle">
-    <button class="chat-button">💬</button>
-  </div>
+  <script>
+    const CONFIG = {
+      PIX_KEY: 'c167165b-1eb4-4753-941a-e792d8f8b0c6',
+      DOWNLOAD_LINK: 'https://drive.google.com/uc?export=download&id=1-X9CaQzw5FJ8EzwxZKBYJJSjIyQXFwCm',
+      ADMIN_PASSWORD: 'psydig2025',
+      SELLER_EMAIL: 'seu-email@exemplo.com',
+      SELLER_PHONE: '+559999999999'
+    };
+
+    // populate PIX and links
+    document.getElementById('pixKey').textContent = CONFIG.PIX_KEY;
+    document.getElementById('directDownload').href = CONFIG.DOWNLOAD_LINK;
+    document.getElementById('sellerPhone').textContent = CONFIG.SELLER_PHONE;
+
+    function copyPix(){ navigator.clipboard.writeText(CONFIG.PIX_KEY).then(()=>alert('Chave PIX copiada!')) }
+    function copyPhone(){ navigator.clipboard.writeText(CONFIG.SELLER_PHONE).then(()=>alert('Telefone copiado!')) }
+
+    // Chat (client-side storage)
+    const chatToggle = document.getElementById('chatToggle');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatFile = document.getElementById('chatFile');
+
+    chatToggle.addEventListener('click', ()=>{ chatWindow.style.display='flex'; chatWindow.setAttribute('aria-hidden','false'); loadMessages(); })
+
+    function closeChat(){ chatWindow.style.display='none'; chatWindow.setAttribute('aria-hidden','true'); }
+
+    function loadMessages(){ 
+      chatMessages.innerHTML = '';
+      const msgs = JSON.parse(localStorage.getItem('psy_chat_msgs')||'[]');
+      msgs.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'msg ' + (m.from==='user'?'user':'system');
+        if(m.type==='file'){ div.innerHTML = '<div style="font-size:12px;color:#333">[anexo] ' + (m.name || 'arquivo') + '</div>'; }
+        else div.textContent = m.text;
+        chatMessages.appendChild(div);
+      });
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    chatFile.addEventListener('change', (e)=>{
+      const f = e.target.files[0];
+      if(!f) return;
+      const reader = new FileReader();
+      reader.onload = ()=> {
+        const base = reader.result;
+        addMessage({from:'user', type:'file', data:base, name:f.name, ts:Date.now()});
+        loadMessages();
+        e.target.value = '';
+      };
+      reader.readAsDataURL(f);
+    });
+
+    function addMessage(msg){ const msgs = JSON.parse(localStorage.getItem('psy_chat_msgs')||'[]'); msgs.push(msg); localStorage.setItem('psy_chat_msgs', JSON.stringify(msgs)); }
+
+    function sendMessage(){
+      const text = chatInput.value.trim();
+      if(!text){ alert('Escreva uma mensagem antes.'); return; }
+      addMessage({from:'user', type:'text', text, ts:Date.now()});
+      chatInput.value='';
+      loadMessages();
+    }
+
+    function notifySeller(){
+      const msgs = JSON.parse(localStorage.getItem('psy_chat_msgs')||'[]');
+      if(msgs.length===0){ alert('Sem mensagens para enviar.'); return; }
+      let body = 'Olá,%0D%0A%0D%0ASegue a conversa do cliente:%0D%0A%0D%0A';
+      msgs.forEach(m=>{
+        if(m.type==='text') body += '['+m.from+'] ' + encodeURIComponent(m.text) + '%0D%0A';
+        else body += '['+m.from+'] (anexo) ' + m.name + '%0D%0A';
+      });
+      body += '%0D%0AAtenciosamente,%0D%0A(Psyfile Digitais)';
+      const mailto = 'mailto:' + encodeURIComponent(CONFIG.SELLER_EMAIL) + '?subject=Nova%20conversa%20Psyfile&body=' + body;
+      window.location.href = mailto;
+    }
+
+    // Admin panel simple actions
+    function openAdmin(){
+      const pass = document.getElementById('adminPass').value;
+      if(pass === CONFIG.ADMIN_PASSWORD){
+        const action = prompt('Ações do painel:\n1 - Liberar link\n2 - Limpar mensagens\nDigite 1 ou 2');
+        if(action==='1'){
+          const newLink = prompt('Cole o link de download direto (Google Drive -> Link de download):', CONFIG.DOWNLOAD_LINK || '');
+          if(newLink){ CONFIG.DOWNLOAD_LINK = newLink; document.getElementById('directDownload').href = newLink; alert('Link atualizado e liberado.'); document.getElementById('downloadNotice')?.textContent = 'Link liberado!'; }
+        } else if(action==='2'){
+          if(confirm('Limpar todas as mensagens salvas localmente?')){ localStorage.removeItem('psy_chat_msgs'); alert('Mensagens limpas.'); loadMessages(); }
+        }
+      } else alert('Senha incorreta.');
+    }
+  </script>
 </body>
 </html>
