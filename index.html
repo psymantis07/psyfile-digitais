@@ -1,1 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Psyfile Digitais — Compra via PIX</title>
+  <style>
+    :root{--bg:#fff8f6;--teal:#7FE0C7;--folder:#FFD166;--brand:#4B2E83;--card:#ffffff;--muted:#6b7280}
+    *{box-sizing:border-box;font-family:Inter, system-ui, Arial, sans-serif}
+    body{margin:0;background:var(--bg);color:#0f1724}
+    .container{max-width:980px;margin:28px auto;padding:20px}
+    header{display:flex;gap:16px;align-items:center}
+    .logo{width:72px;height:72px;border-radius:14px;overflow:hidden}
+    h1{margin:0;font-size:22px;color:var(--brand)}
+    p.lead{color:var(--muted);margin:8px 0 20px}
+    .grid{display:grid;grid-template-columns:1fr 340px;gap:20px}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 24px rgba(16,24,40,0.06)}
+    .price{font-size:26px;font-weight:800;color:var(--brand)}
+    .btn{padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+    .btn-primary{background:var(--brand);color:white}
+    .btn-ghost{border:1px solid rgba(75,46,131,0.12);color:var(--brand);background:transparent}
+    .pix-key{background:white;padding:12px;border-radius:10px;font-weight:700;border:1px dashed #ccd}
+    .chat-toggle{position:fixed;right:20px;bottom:20px}
+    .chat-button{width:56px;height:56px;border-radius:50%;background:var(--brand);color:white;border:none;font-size:20px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo"><img src="logo.png" style="width:100%;height:100%;object-fit:cover"></div>
+      <div>
+        <h1>Psyfile Digitais</h1>
+        <p class="lead">Arquivos digitais: planners, mockups, SVGs e templates.</p>
+      </div>
+    </header>
 
+    <div class="grid" style="margin-top:18px">
+      <main class="card">
+        <h2 style="color:var(--brand)">Kit Planner 2026 — Versão PRO</h2>
+        <p class="muted">Arquivo digital — download liberado após pagamento.</p>
+
+        <div class="price">R$ 29,90</div>
+
+        <hr style="margin:16px 0">
+
+        <h3>Pagamento via PIX</h3>
+        <div class="pix-key">c167165b-1eb4-4753-941a-e792d8f8b0c6</div>
+
+        <a class="btn btn-primary" style="margin-top:12px"
+           href="https://drive.google.com/uc?export=download&id=1-X9CaQzw5FJ8EzwxZKBYJJSjIyQXFwCm">
+           Baixar arquivo
+        </a>
+      </main>
+
+      <aside class="card">
+        <h3>Resumo</h3>
+        <p>Kit Planner 2026</p>
+        <p class="price">R$ 29,90</p>
+      </aside>
+    </div>
+  </div>
+
+  <div class="chat-toggle">
+    <button class="chat-button">💬</button>
+  </div>
+</body>
+</html>
